@@ -118,9 +118,9 @@
                     <url>${remote.server}</url>
                     <username>${remote.user}</username>
                     <password>${remote.password}</password>
-                    <update>true</update>    
-                </configuration>  
-            </plugin>          
+                    <update>true</update>
+                </configuration>
+            </plugin>
             
             <!--This is used to enable @BeforeAll etc used in jUnit 5 -->
             <plugin>

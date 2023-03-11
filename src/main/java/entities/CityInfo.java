@@ -6,10 +6,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "CityInfo")
+@NamedQuery(name = "CityInfo.deleteAllRows", query = "DELETE from CityInfo")
 public class CityInfo {
     @Id
     @Column(name = "zipCode", nullable = false)
-    private Integer id;
+    private int id;
 
     @Column(name = "city", nullable = false)
     private String city;
@@ -20,7 +21,7 @@ public class CityInfo {
     public CityInfo() {
     }
 
-    public CityInfo(Integer id, String city) {
+    public CityInfo(int id, String city) {
         this.id = id;
         this.city = city;
     }
@@ -41,11 +42,11 @@ public class CityInfo {
         this.city = city;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
