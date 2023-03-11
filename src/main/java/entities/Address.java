@@ -6,6 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "Address")
+@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
 public class Address {
     @Id
     @Column(name = "adress", nullable = false)

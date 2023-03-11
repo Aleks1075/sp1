@@ -4,11 +4,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Person")
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private int id;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -20,7 +21,7 @@ public class Person {
     private String lastName;
 
     @Column(name = "age", nullable = false)
-    private Integer age;
+    private int age;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Hobby_nameHobby", nullable = false)
@@ -37,7 +38,14 @@ public class Person {
     public Person() {
     }
 
-    public Person(String email, String firstName, String lastName, Integer age, Hobby hobbyNamehobby, Address addressStreet, Phone phonePhonenumber) {
+    public Person(String email, String firstName, String lastName, int age) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+    }
+
+    public Person(String email, String firstName, String lastName, int age, Hobby hobbyNamehobby, Address addressStreet, Phone phonePhonenumber) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,11 +79,11 @@ public class Person {
         this.addressStreet = addressStreet;
     }
 
-    public Integer getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -103,11 +111,11 @@ public class Person {
         this.email = email;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 }
