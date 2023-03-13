@@ -1,8 +1,9 @@
-GET http://localhost:8080/devops_starter_war_exploded/api/xxx
-
+GET http://localhost:8080/rest/api/cityinfo
+Accept: application/json
 ###
-POST http://localhost:8080/devops_starter_war_exploded/api/xxx
-Content-Type: application/json
-#User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
-
-{"str1": "First Property", "str2": "Second Property"}
+GET http://localhost:8080/rest/api/cityinfo/2300
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/cityinfo/cityByName/Valby
+Accept: application/json
+###

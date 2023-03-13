@@ -21,6 +21,23 @@ public class HobbyDTO
         }
     }
 
+    public HobbyDTO(Hobby hobby)
+    {
+        this.name = hobby.getName();
+        this.wikiLink = hobby.getWikiLink();
+        this.category = hobby.getCategory();
+        this.type = hobby.getType();
+    }
+
+    public static List<HobbyDTO> getHobbyDTO(List<Hobby> hobbies)
+    {
+        List<HobbyDTO> hobbyDTOs = new ArrayList<>();
+        for (Hobby hobby : hobbies) {
+            hobbyDTOs.add(new HobbyDTO(hobby));
+        }
+        return hobbyDTOs;
+    }
+
     public List<HobbyDTO> getAll() {
         return hobbies;
     }

@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.PhoneDTO;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -24,6 +26,12 @@ public class Phone {
     public Phone(String id, String descriptionPhone) {
         this.id = id;
         this.descriptionPhone = descriptionPhone;
+    }
+
+    public Phone(PhoneDTO phoneDTO)
+    {
+        this.id = phoneDTO.getId();
+        this.descriptionPhone = phoneDTO.getDescriptionPhone();
     }
 
     public Set<Person> getPeople() {

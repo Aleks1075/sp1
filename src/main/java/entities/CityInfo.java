@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.CityInfoDTO;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -10,7 +12,7 @@ import java.util.Set;
 public class CityInfo {
     @Id
     @Column(name = "zipCode", nullable = false)
-    private int id;
+    private int zipCode;
 
     @Column(name = "city", nullable = false)
     private String city;
@@ -22,8 +24,14 @@ public class CityInfo {
     }
 
     public CityInfo(int id, String city) {
-        this.id = id;
+        this.zipCode = id;
         this.city = city;
+    }
+
+    public CityInfo(CityInfoDTO cityInfo)
+    {
+        this.zipCode = cityInfo.getZipCode();
+        this.city = cityInfo.getCity();
     }
 
     public Set<Address> getAddresses() {
@@ -43,10 +51,10 @@ public class CityInfo {
     }
 
     public int getId() {
-        return id;
+        return zipCode;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int zipCode) {
+        this.zipCode = zipCode;
     }
 }

@@ -1,5 +1,7 @@
 package entities;
 
+import dtos.HobbyDTO;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -32,6 +34,14 @@ public class Hobby {
         this.wikiLink = wikiLink;
         this.category = category;
         this.type = type;
+    }
+
+    public Hobby(HobbyDTO hobbyDTO)
+    {
+        this.name = hobbyDTO.getName();
+        this.wikiLink = hobbyDTO.getWikiLink();
+        this.category = hobbyDTO.getCategory();
+        this.type = hobbyDTO.getType();
     }
 
     public Set<Person> getPeople() {

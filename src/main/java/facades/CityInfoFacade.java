@@ -55,7 +55,7 @@ public class CityInfoFacade {
     public CityInfoDTO getCityByZipCode(int zipCode) {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.id = :zipCode", CityInfo.class);
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
             query.setParameter("zipCode", zipCode);
             CityInfo cityInfo = query.getSingleResult();
             return new CityInfoDTO(cityInfo);
