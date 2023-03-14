@@ -150,6 +150,8 @@ public class PersonFacade {
             }
 
             em.getTransaction().commit();
+            em.merge(person);
+
             return new PersonDTO(person);
         } finally {
             em.close();

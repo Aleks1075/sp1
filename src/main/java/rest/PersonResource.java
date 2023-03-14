@@ -21,7 +21,7 @@ public class PersonResource {
        
     private static final PersonFacade FACADE =  PersonFacade.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
@@ -42,5 +42,15 @@ public class PersonResource {
         PersonDTO p = GSON.fromJson(person, PersonDTO.class);
         PersonDTO newPerson = FACADE.createPerson(p);
         return GSON.toJson(newPerson);
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response putPerson(@PathParam("id")int id,String person) {
+        PersonDTO p = GSON.fromJson(person, PersonDTO.class);
+        p = FACADE.editPerson(p);
+        return Response.ok().entity(GSON.toJson(p)).build();
     }
 }
