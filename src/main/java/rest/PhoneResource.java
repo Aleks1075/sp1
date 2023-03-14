@@ -53,7 +53,7 @@ public class PhoneResource {
     @GET
     @Path("/{PhoneNumber}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCityInfoByZipCode(@PathParam("PhoneNumber") String phoneNumber) {
+    public Response getPhoneByNumber(@PathParam("PhoneNumber") String phoneNumber) {
         PhoneDTO phoneDTO = FACADE.getPhoneByNumber(phoneNumber);
         return Response.ok().entity(GSON.toJson(phoneDTO)).build();
     }
@@ -64,7 +64,7 @@ public class PhoneResource {
     @GET
     @Path("/phoneByDescription/{descriptionPhone}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getCityInfoByCity(@PathParam("descriptionPhone") String description) {
+    public Response getPhoneByDescription(@PathParam("descriptionPhone") String description) {
         PhoneDTO phoneDTO = FACADE.getPhoneByDescription(description);
         return Response.ok().entity(GSON.toJson(phoneDTO)).build();
     }
