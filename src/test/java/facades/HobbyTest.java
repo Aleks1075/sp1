@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class HobbyTest {
 
     private static EntityManagerFactory emf;

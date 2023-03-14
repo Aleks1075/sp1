@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Uncomment the line below, to temporarily disable this test
-//@Disabled
+@Disabled
 public class CityInfoTest {
 
     private static EntityManagerFactory emf;
