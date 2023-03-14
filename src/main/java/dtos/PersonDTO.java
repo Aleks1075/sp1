@@ -72,6 +72,22 @@ public class PersonDTO
         this.address = addressDTO;
     }
 
+    public PersonDTO(List<Person> personList)
+    {
+        this.hobbies = new ArrayList<>();
+        this.phones = new ArrayList<>();
+        for (Person person : personList) {
+        this.id = person.getId();
+        this.email = person.getEmail();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.age = person.getAge();
+        this.hobbies.add(new HobbyDTO(person.getHobbyNamehobby()));
+        this.phones.add(new PhoneDTO(person.getPhonePhonenumber()));
+        this.address = new AddressDTO(person.getAddressStreet());
+        }
+    }
+
     public int getId() {
         return id;
     }

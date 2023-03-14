@@ -1,3 +1,4 @@
+//CityInfo
 GET http://localhost:8080/rest/api/cityinfo
 Accept: application/json
 ###
@@ -6,4 +7,131 @@ Accept: application/json
 ###
 GET http://localhost:8080/rest/api/cityinfo/cityByName/Valby
 Accept: application/json
+###
+
+//Person
+GET http://localhost:8080/rest/api/person
+###
+GET http://localhost:8080/rest/api/person/2
+###
+PUT http://localhost:8080/rest/api/person/2
+###
+DELETE http://localhost:8080/rest/api/person/2
+###
+POST http://localhost:8080/rest/api/person
+Content-Type: application/json
+#User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
+
+{
+  "email": "test@example.com",
+  "firstName": "Louise",
+  "lastName": "Hansen",
+  "age": 25,
+  "hobby": {
+    "name": "Animation",
+    "wikiLink": "https://en.wikipedia.org/wiki/Animation",
+    "category": "Generel",
+    "type": "Indendørs"
+  },
+  "phone": {
+    "id": "12345678",
+    "descriptionPhone": "Private"
+  },
+  "address": {
+    "id": "Valbygaardsvej",
+    "additionalInfo": "Apartment 2B",
+    "street": "Main Street",
+    "cityInfo": {
+      "zipCode": 2750,
+      "city": "Ballerup"
+    }
+  }
+}
+###
+
+//Phone
+GET http://localhost:8080/rest/api/phone
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/phone/93601903
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/phone/phoneByDescription/Home
+Accept: application/json
+###
+PUT http://localhost:8080/rest/api/phone/93601903
+Content-Type: application/json
+
+{
+  "id": "12345678",
+  "descriptionPhone": "Work"
+}
+###
+POST http://localhost:8080/rest/api/phone
+Content-Type: application/json
+
+{
+  "id": "67890123",
+  "descriptionPhone": "Private"
+}
+###
+
+//Address
+GET http://localhost:8080/rest/api/address
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/address/TestGade
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/address/addressByZipCode/186
+Accept: application/json
+###
+DELETE http://localhost:8080/rest/api/address/TestGade
+###
+POST http://localhost:8080/rest/api/address
+Content-Type: application/json
+
+{
+    "id": "Testvej",
+    "additionalInfo": "Apartment 1A",
+    "street": "Main Test",
+    "cityInfo": {
+        "zipCode": 2750,
+        "city": "Ballerup"
+    }
+}
+###
+
+//Hobby
+GET http://localhost:8080/rest/api/hobby
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/hobby/Animation
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/hobby/hobbyByType/Indendørs
+Accept: application/json
+###
+PUT http://localhost:8080/rest/api/hobby/Test
+Content-Type: application/json
+
+{
+  "name": "TestEdit",
+  "wikiLink": "https://en.wikipedia.org/wiki/TestEdited",
+  "category": "Test",
+  "type": "Test"
+}
+###
+DELETE http://localhost:8080/rest/api/hobby/Test
+Accept: application/json
+###
+POST http://localhost:8080/rest/api/hobby
+Content-Type: application/json
+
+{
+  "name": "Test",
+  "wikiLink": "https://en.wikipedia.org/wiki/Test",
+  "category": "Generel",
+  "type": "Indendørs"
+}
 ###

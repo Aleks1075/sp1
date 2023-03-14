@@ -8,6 +8,7 @@ import entities.Hobby;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
@@ -70,5 +71,71 @@ public class HobbyFacade {
             em.close();
         }
         return new HobbyDTO(hobby.getName(), hobby.getWikiLink(), hobby.getCategory(), hobby.getType());
+    }
+
+    public HobbyDTO getHobbyByName(String name)
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
+            query.setParameter("name", name);
+            Hobby hobby = query.getSingleResult();
+            if(hobby == null) {
+                throw new WebApplicationException("No hobby found");
+            }
+            return new HobbyDTO(hobby);
+        } finally {
+            em.close();
+        }
+    }
+
+    public HobbyDTO getHobbyByType(String type)
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h WHERE h.type = :type", Hobby.class);
+            query.setParameter("type", type);
+            List<Hobby> hobbies = query.getResultList();
+            if(hobbies == null) {
+                throw new WebApplicationException("No hobbies found");
+            }
+            return new HobbyDTO(hobbies);
+        } finally {
+            em.close();
+        }
+    }
+
+    public HobbyDTO editHobby(HobbyDTO hobbyDTO) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Hobby hobby = em.find(Hobby.class, hobbyDTO.getName());
+            if (hobby == null) {
+                throw new NotFoundException("Hobby with id: " + hobbyDTO.getName() + " not found");
+            }
+            hobby.setName(hobbyDTO.getName());
+            hobby.setCategory(hobbyDTO.getCategory());
+            hobby.setType(hobbyDTO.getType());
+            hobby.setWikiLink(hobbyDTO.getWikiLink());
+            em.getTransaction().commit();
+            return new HobbyDTO(hobby);
+        } finally {
+            em.close();
+        }
+    }
+
+    public HobbyDTO deleteHobby(String name) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Hobby hobby = em.find(Hobby.class, name);
+            if (hobby != null) {
+                em.remove(hobby);
+            }
+            em.getTransaction().commit();
+            return new HobbyDTO(hobby);
+        } finally {
+            em.close();
+        }
     }
 }

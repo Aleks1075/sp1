@@ -3,11 +3,16 @@ package dtos;
 import entities.Address;
 import entities.CityInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddressDTO {
     private String id;
     private String additionalInfo;
     private String street;
     private CityInfoDTO cityInfo;
+
+    List<AddressDTO> all = new ArrayList();
 
     public AddressDTO() {
     }
@@ -39,6 +44,17 @@ public class AddressDTO {
         this.additionalInfo = address.getAdditionalInfo();
         this.street = address.getStreet();
         this.cityInfo = new CityInfoDTO(cityInfo);
+    }
+
+    public AddressDTO(List<Address> addressEntities)
+    {
+        addressEntities.forEach((address) ->
+        {
+            this.id = address.getId();
+            this.street = address.getStreet();
+            this.additionalInfo = address.getAdditionalInfo();
+            this.cityInfo = new CityInfoDTO(address.getCityInfo());
+        });
     }
 
     public String getId() {

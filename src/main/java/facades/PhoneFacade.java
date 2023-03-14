@@ -56,4 +56,65 @@ public class PhoneFacade {
             em.close();
         }
     }
+
+    public PhoneDTO getPhoneByNumber(String phoneNumber)
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.id = :PhoneNumber", Phone.class);
+            query.setParameter("PhoneNumber", phoneNumber);
+            Phone phone = query.getSingleResult();
+            return new PhoneDTO(phone);
+        } catch (Exception e) {
+            throw new NotFoundException("Phone with number " + phoneNumber + " not found");
+        } finally {
+            em.close();
+        }
+    }
+
+    public PhoneDTO getPhoneByDescription(String description)
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Phone> query = em.createQuery("SELECT p FROM Phone p WHERE p.descriptionPhone = :descriptionPhone", Phone.class);
+            query.setParameter("descriptionPhone", description);
+            Phone phone = query.getSingleResult();
+            return new PhoneDTO(phone);
+        } catch (Exception e) {
+            throw new NotFoundException("Phone with description " + description + " not found");
+        } finally {
+            em.close();
+        }
+    }
+
+    public PhoneDTO addPhone(PhoneDTO phoneDTO)
+    {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
+            em.persist(phone);
+            em.getTransaction().commit();
+            return new PhoneDTO(phone);
+        } finally {
+            em.close();
+        }
+    }
+
+    public PhoneDTO editPhone(PhoneDTO phoneDTO) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            Phone phone = em.find(Phone.class, phoneDTO.getId());
+            if (phone == null) {
+                throw new NotFoundException("Phone with number: " + phoneDTO.getId() + " not found");
+            }
+            phone.setId(phoneDTO.getId());
+            phone.setDescriptionPhone(phoneDTO.getDescriptionPhone());
+            em.getTransaction().commit();
+            return new PhoneDTO(phone);
+        } finally {
+            em.close();
+        }
+    }
 }

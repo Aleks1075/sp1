@@ -67,20 +67,37 @@ public class PersonFacade {
 
     public PersonDTO createPerson(PersonDTO personDTO) {
         EntityManager em = getEntityManager();
-        AddressDTO addressDTO = personDTO.getAddress();
-        CityInfo cityInfo = new CityInfo(addressDTO.getCityInfo().getZipCode(), addressDTO.getCityInfo().getCity());
-        Address address = new Address(addressDTO.getId(), addressDTO.getStreet(), addressDTO.getAdditionalInfo(), cityInfo);
-        Phone phone = new Phone(personDTO.getPhone().getId(), personDTO.getPhone().getDescriptionPhone());
-        Hobby hobby = new Hobby(personDTO.getHobby().getName(), personDTO.getHobby().getWikiLink(),
-                personDTO.getHobby().getCategory(), personDTO.getHobby().getType());
+        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getAge());
+        try {
+            //add hobby
+            for(HobbyDTO hobbyDTO : personDTO.getHobbies()) {
+                TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
+                query.setParameter("name", hobbyDTO.getName());
+                Hobby hobby = query.getSingleResult();
+                person.addHobby(hobby);
+            }
 
-        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getAge(),
-                hobby, address, phone);
-        em.getTransaction().begin();
-        em.persist(person);
-        em.getTransaction().commit();
+            //add address
+            Address address = new Address(personDTO.getAddress().getId(), personDTO.getAddress().getAdditionalInfo(), personDTO.getAddress().getStreet());
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
+            query.setParameter("zipCode", personDTO.getAddress().getCityInfo().getZipCode());
+            CityInfo cityInfo = query.getSingleResult();
+            address.setCityInfo(cityInfo);
+            person.setAddress(address);
 
-        return new PersonDTO(person);
+            //add phone
+            for(PhoneDTO phoneDTO : personDTO.getPhones()) {
+                Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
+                person.addPhone(phone);
+            }
+
+            em.getTransaction().begin();
+            em.persist(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
     }
 
     public Person getPersonByHobby(String name) {
@@ -134,6 +151,17 @@ public class PersonFacade {
 
             em.getTransaction().commit();
             return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
+    }
+
+    public PersonDTO getAllPersons() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+            List<Person> personList = query.getResultList();
+            return new PersonDTO(personList);
         } finally {
             em.close();
         }

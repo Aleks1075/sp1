@@ -12,11 +12,10 @@ public class CityInfoDTO
 
     List<CityInfoDTO> all = new ArrayList();
 
-    public CityInfoDTO(List<CityInfo> cityInfoEntities)
-    {
-        cityInfoEntities.forEach((cityInfo) ->
-        {
-            all.add(new CityInfoDTO(cityInfo));
+    public CityInfoDTO(List<CityInfo> cityInfoEntities) {
+        cityInfoEntities.forEach(cityInfo -> {
+            this.zipCode = cityInfo.getId();
+            this.city = cityInfo.getCity();
         });
     }
 
