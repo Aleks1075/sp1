@@ -95,4 +95,9 @@ public class EMF_Creator {
         return pomProperties.getProperty("db.name");
     }
 
+    public static void shutdown()
+    {
+        EntityManagerFactory emf = createEntityManagerFactory();
+        emf.close();
+    }
 }
