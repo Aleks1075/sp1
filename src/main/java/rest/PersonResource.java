@@ -2,12 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dtos.*;
-import entities.Address;
-import entities.Hobby;
-import entities.Person;
-import entities.Phone;
-import facades.CityInfoFacade;
+import dtos.PersonDTO;
 import facades.PersonFacade;
 import utils.EMF_Creator;
 
@@ -16,21 +11,42 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-//Todo Remove or change relevant parts before ACTUAL use
+/**
+ * Denne klasse repræsenterer en REST API-ressource til Person.
+ * Det giver klienter mulighed for at udføre CRUD-operationer på Person.
+ * Denne klasse bruger JAX-RS annoteringer til at definere HTTP metoder og ressourcer.
+ * PhoneResource-klassen bruger PersonFacade-klassen til at interagere med databasen.
+ */
 @Path("person")
 public class PersonResource {
 
+    /**
+     * Opret EntityManagerFactory ved hjælp af hjælpeklassen EMF_Creator
+     */
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
-       
+
+    /**
+     * Opret en instans af PersonFacade-klassen for at interagere med databasen
+     */
     private static final PersonFacade FACADE =  PersonFacade.getFacadeExample(EMF);
+
+    /**
+     * Opret et Gson-objekt til at konvertere mellem JSON- og Java-objekter.
+     */
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+    /**
+     * Hent alle Persons fra databasen og returner dem som en JSON-streng
+     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersons())).build();
     }
 
+    /**
+     * Få en Person ved dens id og returner den som en JSON-streng
+     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -41,10 +57,11 @@ public class PersonResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteAddress(@PathParam("id") int id) {
+    public String deletePerson(@PathParam("id") int id) {
         PersonDTO personDTO = FACADE.deletePerson(id);
         return GSON.toJson(personDTO);
     }
+
 
     @PUT
     @Path("/edit")

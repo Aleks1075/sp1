@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
  * Denne klasse bruger JAX-RS annoteringer til at definere HTTP metoder og ressourcer.
  * PhoneResource-klassen bruger PhoneFacade-klassen til at interagere med databasen.
  */
-
 @Path("phone")
 public class PhoneResource {
 
