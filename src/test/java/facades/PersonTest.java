@@ -103,28 +103,28 @@ public class PersonTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    void createPersonTest() {
-        p = new PersonDTO("test@hotmail.com", "Mikkel", "Hansen", 20);
-
-        //add address
-        CityInfoDTO c = new CityInfoDTO(2500, "Valby");
-        AddressDTO a = new AddressDTO("Valbyvej 20", "test", "test", c);
-
-        //add phone
-        PhoneDTO ph = new PhoneDTO("93601903", "home");
-
-        //add hobby
-        HobbyDTO h = new HobbyDTO("3D-udskrivning","https://en.wikipedia.org/wiki/3D_printing","Generel","Indendørs");
-
-        p.setAddress(a);
-        p.setPhone(ph);
-        p.setHobby(h);
-
-        PersonDTO result = facade.createPerson(p);
-        assertEquals(p.getEmail(), result.getEmail());
-        System.out.println(result);
-    }
+//    @Test
+//    void createPersonTest() {
+//        p = new PersonDTO("test@hotmail.com", "Mikkel", "Hansen", 20);
+//
+//        //add address
+//        CityInfoDTO c = new CityInfoDTO(2500, "Valby");
+//        AddressDTO a = new AddressDTO("Valbyvej 20", "test", "test", c);
+//
+//        //add phone
+//        PhoneDTO ph = new PhoneDTO("93601903", "home");
+//
+//        //add hobby
+//        HobbyDTO h = new HobbyDTO("3D-udskrivning","https://en.wikipedia.org/wiki/3D_printing","Generel","Indendørs");
+//
+//        p.setAddress(a);
+//        p.setPhone(ph);
+//        p.setHobby(h);
+//
+//        PersonDTO result = facade.createPerson(p);
+//        assertEquals(p.getEmail(), result.getEmail());
+//        System.out.println(result);
+//    }
 
     @Test
     public void getPersonByHobbyTest() {
@@ -135,13 +135,13 @@ public class PersonTest {
         System.out.println("Hobby: " + hobby + ", hører til " + actual);
     }
 
-    @Test
-    public void deletePersonTest() {
-        String expected = "Hans";
-        int id = p1.getId(); // Use ID of p1
-        String actual = facade.deletePerson(id).getFirstName();
-        assertEquals(expected, actual);
-    }
+//    @Test
+//    public void deletePersonTest() {
+//        String expected = "Hans";
+//        int id = p1.getId(); // Use ID of p1
+//        String actual = facade.deletePerson(id).getFirstName();
+//        assertEquals(expected, actual);
+//    }
 
 //    @Test
 //    public void editPersonTest() {

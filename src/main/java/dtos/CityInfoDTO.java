@@ -13,10 +13,9 @@ public class CityInfoDTO
     List<CityInfoDTO> all = new ArrayList();
 
     public CityInfoDTO(List<CityInfo> cityInfoEntities) {
-        cityInfoEntities.forEach(cityInfo -> {
-            this.zipCode = cityInfo.getId();
-            this.city = cityInfo.getCity();
-        });
+        for (CityInfo cityInfo : cityInfoEntities) {
+            all.add(new CityInfoDTO(cityInfo));
+        }
     }
 
     public CityInfoDTO(int zipCode, String city)
@@ -49,6 +48,10 @@ public class CityInfoDTO
     public void setCity(String city)
     {
         this.city = city;
+    }
+
+    public List<CityInfoDTO> getAll() {
+        return all;
     }
 
     public int getSize() {

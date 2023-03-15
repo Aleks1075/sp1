@@ -9,6 +9,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -71,6 +72,23 @@ public class CityInfoFacade {
             query.setParameter("city", city);
             CityInfo cityInfo = query.getSingleResult();
             return new CityInfoDTO(cityInfo);
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<CityInfoDTO> getDanishZipCodes() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c", CityInfo.class);
+            List<CityInfo> cityInfoList = query.getResultList();
+            List<CityInfoDTO> danishZipCodes = new ArrayList<>();
+            for (CityInfo cityInfo : cityInfoList) {
+                if (cityInfo.getId() >= 800 && cityInfo.getId() <= 5932) {
+                    danishZipCodes.add(new CityInfoDTO(cityInfo));
+                }
+            }
+            return danishZipCodes;
         } finally {
             em.close();
         }

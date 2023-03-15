@@ -8,6 +8,7 @@ import entities.CityInfo;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 
 public class AddressFacade
@@ -82,6 +83,50 @@ public class AddressFacade
         try {
             em.getTransaction().begin();
             em.persist(address);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new AddressDTO(address);
+    }
+
+    public AddressDTO editAddress(AddressDTO addressDTO) {
+        EntityManager em = emf.createEntityManager();
+        Address address = em.find(Address.class, addressDTO.getId());
+
+        if (address == null) {
+            throw new NotFoundException("Address not found");
+        }
+
+        address.setAdditionalInfo(addressDTO.getAdditionalInfo());
+        address.setStreet(addressDTO.getStreet());
+
+        TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
+        query.setParameter("zipCode", addressDTO.getCityInfo().getZipCode());
+        CityInfo cityInfo = query.getSingleResult();
+        address.setCityInfo(cityInfo);
+
+        try {
+            em.getTransaction().begin();
+            em.merge(address);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new AddressDTO(address);
+    }
+
+    public AddressDTO deleteAddress(String id) {
+        EntityManager em = emf.createEntityManager();
+        Address address = em.find(Address.class, id);
+
+        if (address == null) {
+            throw new NotFoundException("Address not found");
+        }
+
+        try {
+            em.getTransaction().begin();
+            em.remove(address);
             em.getTransaction().commit();
         } finally {
             em.close();

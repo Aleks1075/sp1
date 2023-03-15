@@ -1,6 +1,7 @@
 package entities;
 
 import dtos.AddressDTO;
+import dtos.CityInfoDTO;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;

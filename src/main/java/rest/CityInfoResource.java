@@ -21,11 +21,11 @@ public class CityInfoResource {
        
     private static final CityInfoFacade FACADE =  CityInfoFacade.getFacadeExample(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-            
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
-        return Response.ok().entity(GSON.toJson(FACADE.getAllCityInfo())).build();
+        return Response.ok().entity(GSON.toJson(FACADE.getAllCityInfo().getAll())).build();
     }
 
     @GET
@@ -42,5 +42,12 @@ public class CityInfoResource {
     public Response getCityInfoByCity(@PathParam("city") String city) {
         CityInfoDTO cityInfoDTO = FACADE.getCityByName(city);
         return Response.ok().entity(GSON.toJson(cityInfoDTO)).build();
+    }
+
+    @GET
+    @Path("danish-zip-codes")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getDanishZipCodes() {
+        return Response.ok().entity(GSON.toJson(FACADE.getDanishZipCodes())).build();
     }
 }

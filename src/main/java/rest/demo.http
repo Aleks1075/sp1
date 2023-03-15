@@ -8,21 +8,20 @@ Accept: application/json
 GET http://localhost:8080/rest/api/cityinfo/cityByName/Valby
 Accept: application/json
 ###
+GET http://localhost:8080/rest/api/cityinfo/danish-zip-codes
+Accept: application/json
+###
 
 //Person
 GET http://localhost:8080/rest/api/person
 ###
 GET http://localhost:8080/rest/api/person/2
 ###
-PUT http://localhost:8080/rest/api/person/2
-###
-DELETE http://localhost:8080/rest/api/person/2
-###
-POST http://localhost:8080/rest/api/person
+PUT http://localhost:8080/rest/api/person/edit
 Content-Type: application/json
-#User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
 {
+  "id": 2,
   "email": "test@example.com",
   "firstName": "Louise",
   "lastName": "Hansen",
@@ -33,10 +32,6 @@ Content-Type: application/json
     "category": "Generel",
     "type": "Indendørs"
   },
-  "phone": {
-    "id": "12345678",
-    "descriptionPhone": "Private"
-  },
   "address": {
     "id": "Valbygaardsvej",
     "additionalInfo": "Apartment 2B",
@@ -45,8 +40,52 @@ Content-Type: application/json
       "zipCode": 2750,
       "city": "Ballerup"
     }
-  }
+  },
+  "phones": [
+    {
+      "id": "12345678",
+      "descriptionPhone": "Private"
+    }
+  ]
 }
+
+###
+DELETE http://localhost:8080/rest/api/person/3
+Content-Type: application/json
+###
+POST http://localhost:8080/rest/api/person/add
+Content-Type: application/json
+
+{
+  "email": "david@example.com",
+  "firstName": "David",
+  "lastName": "Goggins",
+  "age": 20,
+  "hobbies": [
+    {
+      "name": "Animation",
+      "wikiLink": "https://en.wikipedia.org/wiki/Animation",
+      "category": "Generel",
+      "type": "Indendørs"
+    }
+  ],
+  "address": {
+    "id": "Valbygaardsvej",
+    "additionalInfo": "Apartment 1B",
+    "street": "Main Street1",
+    "cityInfo": {
+      "zipCode": 2750,
+      "city": "Ballerup"
+    }
+  },
+  "phones": [
+    {
+      "id": "11113337",
+      "descriptionPhone": "Home"
+    }
+  ]
+}
+
 ###
 
 //Phone
@@ -86,7 +125,21 @@ Accept: application/json
 GET http://localhost:8080/rest/api/address/addressByZipCode/186
 Accept: application/json
 ###
-DELETE http://localhost:8080/rest/api/address/TestGade
+DELETE http://localhost:8080/rest/api/address/Testvej
+Content-Type: application/json
+###
+PUT http://localhost:8080/rest/api/address/
+Content-Type: application/json
+
+{
+  "id": "Testvej",
+  "additionalInfo": "Apartment 1B",
+  "street": "Main Test",
+  "cityInfo": {
+    "zipCode": 2750,
+    "city": "Ballerup"
+  }
+}
 ###
 POST http://localhost:8080/rest/api/address
 Content-Type: application/json

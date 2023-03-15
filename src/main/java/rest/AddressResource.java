@@ -44,6 +44,15 @@ public class AddressResource {
         return Response.ok().entity(GSON.toJson(cityInfoDTO)).build();
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String editAddress(String addressJson) {
+        AddressDTO addressDTO = GSON.fromJson(addressJson, AddressDTO.class);
+        AddressDTO updatedAddress = FACADE.editAddress(addressDTO);
+        return GSON.toJson(updatedAddress);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -51,5 +60,13 @@ public class AddressResource {
         AddressDTO addressDTO = GSON.fromJson(addressJson, AddressDTO.class);
         AddressDTO newAddress = FACADE.addAddress(addressDTO);
         return GSON.toJson(newAddress);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteAddress(@PathParam("id") String id) {
+        AddressDTO deletedAddress = FACADE.deleteAddress(id);
+        return GSON.toJson(deletedAddress);
     }
 }

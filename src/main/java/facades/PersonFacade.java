@@ -65,41 +65,6 @@ public class PersonFacade {
         }
     }
 
-    public PersonDTO createPerson(PersonDTO personDTO) {
-        EntityManager em = getEntityManager();
-        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getAge());
-        try {
-            //add hobby
-            for(HobbyDTO hobbyDTO : personDTO.getHobbies()) {
-                TypedQuery<Hobby> query = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
-                query.setParameter("name", hobbyDTO.getName());
-                Hobby hobby = query.getSingleResult();
-                person.addHobby(hobby);
-            }
-
-            //add address
-            Address address = new Address(personDTO.getAddress().getId(), personDTO.getAddress().getAdditionalInfo(), personDTO.getAddress().getStreet());
-            TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
-            query.setParameter("zipCode", personDTO.getAddress().getCityInfo().getZipCode());
-            CityInfo cityInfo = query.getSingleResult();
-            address.setCityInfo(cityInfo);
-            person.setAddress(address);
-
-            //add phone
-            for(PhoneDTO phoneDTO : personDTO.getPhones()) {
-                Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
-                person.addPhone(phone);
-            }
-
-            em.getTransaction().begin();
-            em.persist(person);
-            em.getTransaction().commit();
-            return new PersonDTO(person);
-        } finally {
-            em.close();
-        }
-    }
-
     public Person getPersonByHobby(String name) {
         EntityManager em = getEntityManager();
         try {
@@ -111,49 +76,20 @@ public class PersonFacade {
         }
     }
 
-    public Person deletePerson(int id) {
+    public PersonDTO deletePerson(int id) {
         EntityManager em = getEntityManager();
+        Person person = em.find(Person.class, id);
+        if (person == null) {
+            throw new IllegalArgumentException("No person found with the provided ID");
+        }
         try {
-            Person person = em.find(Person.class, id);
             em.getTransaction().begin();
             em.remove(person);
             em.getTransaction().commit();
-            return person;
         } finally {
             em.close();
         }
-    }
-
-    public PersonDTO editPerson(PersonDTO personDTO) {
-        EntityManager em = getEntityManager();
-        try {
-            em.getTransaction().begin();
-            Person person = em.find(Person.class, personDTO.getId());
-            if (person == null) {
-                throw new NotFoundException("Person with ID " + personDTO.getId() + " not found.");
-            }
-            person.setFirstName(personDTO.getFirstName());
-            person.setLastName(personDTO.getLastName());
-            person.setEmail(personDTO.getEmail());
-
-            if (personDTO.getAddress() != null) {
-                person.setAddress(new Address(personDTO.getAddress().getId(), personDTO.getAddress().getAdditionalInfo(), personDTO.getAddress().getStreet(),
-                        new CityInfo(personDTO.getAddress().getCityInfo().getZipCode(), personDTO.getAddress().getCityInfo().getCity())));
-            }
-
-            if (personDTO.getHobby() != null) {
-                person.setHobby(new Hobby(personDTO.getHobby().getName(), personDTO.getHobby().getWikiLink(), personDTO.getHobby().getCategory(), personDTO.getHobby().getType()));
-            }
-
-            if (personDTO.getPhone() != null) {
-                person.setPhone(new Phone(personDTO.getPhone().getId(), personDTO.getPhone().getDescriptionPhone()));
-            }
-
-            em.getTransaction().commit();
-            return new PersonDTO(person);
-        } finally {
-            em.close();
-        }
+        return new PersonDTO(person);
     }
 
     public PersonDTO getAllPersons() {
@@ -165,5 +101,100 @@ public class PersonFacade {
         } finally {
             em.close();
         }
+    }
+
+    // Edit person
+    public PersonDTO editPerson(PersonDTO personDTO) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Person person = em.find(Person.class, personDTO.getId());
+
+            if (personDTO.getEmail() != null) {
+                person.setEmail(personDTO.getEmail());
+            }
+            if (personDTO.getFirstName() != null) {
+                person.setFirstName(personDTO.getFirstName());
+            }
+            if (personDTO.getLastName() != null) {
+                person.setLastName(personDTO.getLastName());
+            }
+            if (personDTO.getAge() != 0) {
+                person.setAge(personDTO.getAge());
+            }
+
+            if (personDTO.getAddress() != null) {
+                Address address = new Address(personDTO.getAddress().getId(), personDTO.getAddress().getStreet(), personDTO.getAddress().getAdditionalInfo());
+                TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
+                query.setParameter("zipCode", personDTO.getAddress().getCityInfo().getZipCode());
+                CityInfo cityInfo = query.getSingleResult();
+                address.setCityInfo(cityInfo);
+                person.setAddress(address);
+            }
+
+            if (personDTO.getHobbies() != null) {
+                for (HobbyDTO hobbyDTO : personDTO.getHobbies()) {
+                    Hobby hobby = new Hobby(hobbyDTO.getName(), hobbyDTO.getWikiLink(), hobbyDTO.getCategory(), hobbyDTO.getType());
+                    person.addHobby(hobby);
+                }
+            }
+
+            if (personDTO.getPhones() != null) {
+                for (PhoneDTO phoneDTO : personDTO.getPhones()) {
+                    Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
+                    person.addPhone(phone);
+                }
+            }
+            em.merge(person);
+            em.getTransaction().commit();
+            return new PersonDTO(person);
+        } finally {
+            em.close();
+        }
+    }
+
+    public PersonDTO addPerson(PersonDTO personDTO) {
+        EntityManager em = emf.createEntityManager();
+        Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getAge());
+
+        for(HobbyDTO hobbyDTO : personDTO.getHobbies()) {
+            // Check if the hobby already exists in the database
+            TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
+            hobbyQuery.setParameter("name", hobbyDTO.getName());
+            List<Hobby> existingHobbies = hobbyQuery.getResultList();
+
+            Hobby hobby;
+            if (existingHobbies.isEmpty()) {
+                // If the hobby does not exist, create a new one
+                hobby = new Hobby(hobbyDTO.getName(), hobbyDTO.getWikiLink(), hobbyDTO.getCategory(), hobbyDTO.getType());
+            } else {
+                // If the hobby exists, use the existing one
+                hobby = existingHobbies.get(0);
+            }
+
+            person.setHobbyNamehobby(hobby);
+        }
+
+        Address address = new Address(personDTO.getAddress().getId(), personDTO.getAddress().getAdditionalInfo(), personDTO.getAddress().getStreet());
+        TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.zipCode = :zipCode", CityInfo.class);
+        query.setParameter("zipCode", personDTO.getAddress().getCityInfo().getZipCode());
+        CityInfo cityInfo = query.getSingleResult();
+        address.setCityInfo(cityInfo);
+        person.setAddressStreet(address);
+
+        for(PhoneDTO phoneDTO : personDTO.getPhones()) {
+            Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
+            person.setPhonePhonenumber(phone);
+        }
+
+        try {
+            em.getTransaction().begin();
+            em.persist(address); // Persist the Address object
+            em.persist(person);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new PersonDTO(person);
     }
 }

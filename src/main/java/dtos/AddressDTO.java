@@ -11,6 +11,7 @@ public class AddressDTO {
     private String additionalInfo;
     private String street;
     private CityInfoDTO cityInfo;
+    private int zipCode;
 
     List<AddressDTO> all = new ArrayList();
 
@@ -83,6 +84,14 @@ public class AddressDTO {
 
     public CityInfoDTO getCityInfo() {
         return cityInfo;
+    }
+
+    public int getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(int zipCode) {
+        this.zipCode = zipCode;
     }
 
     public void setCityInfo(CityInfoDTO cityInfo) {
