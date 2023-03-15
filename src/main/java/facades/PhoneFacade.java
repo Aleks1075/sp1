@@ -12,24 +12,14 @@ import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * Rename Class to a relevant name Add add relevant facade methods
- */
 public class PhoneFacade {
 
     private static PhoneFacade instance;
     private static EntityManagerFactory emf;
 
-    //Private Constructor to ensure Singleton
     private PhoneFacade() {
     }
 
-
-    /**
-     * @param _emf
-     * @return an instance of this facade class.
-     */
     public static PhoneFacade getFacadeExample(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
