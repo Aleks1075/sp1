@@ -38,6 +38,13 @@ public class HobbyDTO
         return hobbyDTOs;
     }
 
+    public static List<HobbyDTO> getHobbyDTO(Hobby hobbyNamehobby)
+    {
+        List<HobbyDTO> hobbyDTOs = new ArrayList<>();
+        hobbyDTOs.add(new HobbyDTO(hobbyNamehobby));
+        return hobbyDTOs;
+    }
+
     public List<HobbyDTO> getAll() {
         return hobbies;
     }
