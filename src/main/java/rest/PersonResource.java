@@ -12,42 +12,21 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-/**
- * Denne klasse repræsenterer en REST API-ressource til Person.
- * Det giver os mulighed for at udføre CRUD-operationer på Person.
- * Denne klasse bruger JAX-RS annoteringer til at definere HTTP metoder og ressourcer.
- * PhoneResource-klassen bruger PersonFacade-klassen til at interagere med databasen.
- */
 @Path("person")
 public class PersonResource {
-//test
-    /**
-     * Opret EntityManagerFactory ved hjælp af hjælpeklassen EMF_Creator
-     */
+
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
 
-    /**
-     * Opret en instans af PersonFacade-klassen for at interagere med databasen
-     */
     private static final PersonFacade FACADE =  PersonFacade.getFacadeExample(EMF);
 
-    /**
-     * Opret et Gson-objekt til at konvertere mellem JSON- og Java-objekter.
-     */
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    /**
-     * Hent alle Persons fra databasen og returner dem som en JSON-streng
-     */
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAll() {
         return Response.ok().entity(GSON.toJson(FACADE.getAllPersons())).build();
     }
 
-    /**
-     * Få en Person ved dens id og returner den som en JSON-streng
-     */
     @GET
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
