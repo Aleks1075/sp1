@@ -3,6 +3,7 @@ package errorhandling;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import javax.json.Json;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -22,19 +23,18 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
     ServletContext context;
 
     @Override
-    @Produces(MediaType.APPLICATION_JSON)
     public Response toResponse(Throwable ex) {
-        Logger.getLogger(GenericExceptionMapper.class.getName()).log(Level.SEVERE, null, ex);
-        Response.StatusType type = getStatusType(ex);
-        ExceptionDTO err;
+        int statusCode = Response.Status.INTERNAL_SERVER_ERROR.getStatusCode();
+        String message = ex.getMessage();
         if (ex instanceof WebApplicationException) {
-            err = new ExceptionDTO(type.getStatusCode(), ex.getMessage());
-        } else {
-            err = new ExceptionDTO(type.getStatusCode(), type.getReasonPhrase());
+            statusCode = ((WebApplicationException) ex).getResponse().getStatus();
+            message = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();
         }
-        return Response.status(type.getStatusCode())
-                .entity(gson.toJson(err))
-                .type(MediaType.APPLICATION_JSON)
+        return Response.status(statusCode)
+                .entity(Json.createObjectBuilder()
+                        .add("code", statusCode)
+                        .add("message", message)
+                        .build().toString())
                 .build();
     }
 
