@@ -1,9 +1,7 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
 import dtos.PhoneDTO;
-import entities.*;
+import entities.Phone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
