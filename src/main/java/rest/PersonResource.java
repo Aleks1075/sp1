@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * Denne klasse repræsenterer en REST API-ressource til Person.
- * Det giver klienter mulighed for at udføre CRUD-operationer på Person.
+ * Det giver os mulighed for at udføre CRUD-operationer på Person.
  * Denne klasse bruger JAX-RS annoteringer til at definere HTTP metoder og ressourcer.
  * PhoneResource-klassen bruger PersonFacade-klassen til at interagere med databasen.
  */
