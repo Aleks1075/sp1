@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Path("person")
 public class PersonResource {
-
+//test
     /**
      * Opret EntityManagerFactory ved hjælp af hjælpeklassen EMF_Creator
      */
