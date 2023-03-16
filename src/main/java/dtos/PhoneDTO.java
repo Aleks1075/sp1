@@ -32,6 +32,13 @@ public class PhoneDTO
         return phoneDTOs;
     }
 
+    public static List<PhoneDTO> getPhoneDTO(Phone phonePhonenumber)
+    {
+        List<PhoneDTO> phoneDTOs = new ArrayList<>();
+        phoneDTOs.add(new PhoneDTO(phonePhonenumber));
+        return phoneDTOs;
+    }
+
     public String getDescriptionPhone()
     {
         return descriptionPhone;

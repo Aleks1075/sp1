@@ -8,6 +8,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,13 @@ public class CityInfoFacade {
         try {
             TypedQuery<CityInfo> query = em.createQuery("SELECT c FROM CityInfo c WHERE c.city = :city", CityInfo.class);
             query.setParameter("city", city);
-            CityInfo cityInfo = query.getSingleResult();
+            CityInfo cityInfo;
+            try {
+                cityInfo = query.getSingleResult();
+            } catch (NoResultException e) {
+                // Handle the case when no result is found
+                return null;
+            }
             return new CityInfoDTO(cityInfo);
         } finally {
             em.close();

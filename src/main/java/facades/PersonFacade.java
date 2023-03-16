@@ -92,12 +92,12 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO getAllPersons() {
+    public List<PersonDTO> getAllPersons() {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
             List<Person> personList = query.getResultList();
-            return new PersonDTO(personList);
+            return PersonDTO.fromPersonList(personList);
         } finally {
             em.close();
         }
@@ -159,7 +159,7 @@ public class PersonFacade {
         EntityManager em = emf.createEntityManager();
         Person person = new Person(personDTO.getEmail(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getAge());
 
-        for(HobbyDTO hobbyDTO : personDTO.getHobbies()) {
+        for (HobbyDTO hobbyDTO : personDTO.getHobbies()) {
             // Check if the hobby already exists in the database
             TypedQuery<Hobby> hobbyQuery = em.createQuery("SELECT h FROM Hobby h WHERE h.name = :name", Hobby.class);
             hobbyQuery.setParameter("name", hobbyDTO.getName());
@@ -184,7 +184,7 @@ public class PersonFacade {
         address.setCityInfo(cityInfo);
         person.setAddressStreet(address);
 
-        for(PhoneDTO phoneDTO : personDTO.getPhones()) {
+        for (PhoneDTO phoneDTO : personDTO.getPhones()) {
             Phone phone = new Phone(phoneDTO.getId(), phoneDTO.getDescriptionPhone());
             person.setPhonePhonenumber(phone);
         }
@@ -198,5 +198,40 @@ public class PersonFacade {
             em.close();
         }
         return new PersonDTO(person);
+    }
+
+    public List<PersonDTO> getPersonsByHobby(String hobby) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p JOIN p.hobbyNamehobby h WHERE h.name = :hobby", Person.class);
+            query.setParameter("hobby", hobby);
+            List<Person> persons = query.getResultList();
+            return persons.stream().map(PersonDTO::new).collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
+    }
+
+    public long getNumberOfPersonsByHobby(String hobby) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Long> query = em.createQuery("SELECT COUNT(p) FROM Person p JOIN p.hobbyNamehobby h WHERE h.name = :hobby", Long.class);
+            query.setParameter("hobby", hobby);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<PersonDTO> getPersonsByZipCode(int zipCode) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p WHERE p.addressStreet.cityinfoZipcode.zipCode = :zipCode", Person.class);
+            query.setParameter("zipCode", zipCode);
+            List<Person> persons = query.getResultList();
+            return persons.stream().map(PersonDTO::new).collect(Collectors.toList());
+        } finally {
+            em.close();
+        }
     }
 }

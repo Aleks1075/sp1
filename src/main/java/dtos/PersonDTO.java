@@ -88,6 +88,18 @@ public class PersonDTO
         }
     }
 
+    public static List<PersonDTO> fromPersonList(List<Person> personList) {
+        List<PersonDTO> personDTOs = new ArrayList<>();
+        for (Person person : personList) {
+            PersonDTO dto = new PersonDTO(person);
+            dto.setHobbies(HobbyDTO.getHobbyDTO(person.getHobbyNamehobby()));
+            dto.setPhones(PhoneDTO.getPhoneDTO(person.getPhonePhonenumber()));
+            dto.setAddress(new AddressDTO(person.getAddressStreet(), person.getAddressStreet().getCityInfo()));
+            personDTOs.add(dto);
+        }
+        return personDTOs;
+    }
+
     public int getId() {
         return id;
     }

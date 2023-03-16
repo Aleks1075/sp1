@@ -41,6 +41,9 @@ public class CityInfoResource {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getCityInfoByCity(@PathParam("city") String city) {
         CityInfoDTO cityInfoDTO = FACADE.getCityByName(city);
+        if (cityInfoDTO == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("City not found").build();
+        }
         return Response.ok().entity(GSON.toJson(cityInfoDTO)).build();
     }
 

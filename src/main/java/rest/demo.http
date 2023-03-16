@@ -14,8 +14,22 @@ Accept: application/json
 
 //Person
 GET http://localhost:8080/rest/api/person
+Accept: application/json
 ###
 GET http://localhost:8080/rest/api/person/2
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/person/phone/93601903
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/person/hobby/Animation
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/person/zipCode/2750
+Accept: application/json
+###
+GET http://localhost:8080/rest/api/person/personByHobby/Animation
+Accept: application/json
 ###
 PUT http://localhost:8080/rest/api/person/edit
 Content-Type: application/json
