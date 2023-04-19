@@ -1,5 +1,5 @@
 package facades;
-
+//comment
 import entities.CityInfo;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class CityInfoTest {
 
     private static EntityManagerFactory emf;
@@ -54,7 +54,7 @@ public class CityInfoTest {
 //        Remove any data after each test was run
     }
 
-    @Test
+    //@Test
     public void getAllCityInfoTest() {
         int expected = 1;
         int actual = facade.getAllCityInfo().getSize();

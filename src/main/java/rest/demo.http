@@ -71,9 +71,9 @@ POST http://localhost:8080/rest/api/person/add
 Content-Type: application/json
 
 {
-  "email": "david@example.com",
-  "firstName": "David",
-  "lastName": "Goggins",
+  "email": "jordan@example.com",
+  "firstName": "Micheal",
+  "lastName": "Jordan",
   "age": 20,
   "hobbies": [
     {
@@ -84,7 +84,7 @@ Content-Type: application/json
     }
   ],
   "address": {
-    "id": "Valbygaardsvej",
+    "id": "ValbygaardsvejTest",
     "additionalInfo": "Apartment 1B",
     "street": "Main Street1",
     "cityInfo": {
@@ -94,7 +94,7 @@ Content-Type: application/json
   },
   "phones": [
     {
-      "id": "11113337",
+      "id": "36373839",
       "descriptionPhone": "Home"
     }
   ]
