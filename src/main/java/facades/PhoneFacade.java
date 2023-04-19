@@ -1,9 +1,7 @@
 package facades;
 
-import dtos.AddressDTO;
-import dtos.PersonDTO;
 import dtos.PhoneDTO;
-import entities.*;
+import entities.Phone;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,31 +10,15 @@ import javax.ws.rs.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PhoneFacade-klassen giver CRUD-operationer til Phone-entities.
- */
 public class PhoneFacade {
 
-    /**
-     * Instansvariablen bruges til at implementere Singleton-mønsteret til PhoneFacade.
-     */
     private static PhoneFacade instance;
 
-    /**
-     * Instansvariablen bruges til at oprette EntityManager-objekter.
-     */
     private static EntityManagerFactory emf;
 
-    /**
-     * Privat konstruktør for at forhindre instansiering uden for klassen.
-     */
     private PhoneFacade() {
     }
 
-    /**
-     * Returnerer singleton-forekomsten af PhoneFacade-klassen.
-     * Hvis forekomsten er null, oprettes en ny PhoneFacade og EntityManagerFactory indstilles.
-     */
     public static PhoneFacade getFacadeExample(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -45,16 +27,10 @@ public class PhoneFacade {
         return instance;
     }
 
-    /**
-     * Opretter og returnerer en EntityManager-instans.
-     */
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
 
-    /**
-     * Returnerer en liste over alle PhoneDTO'er.
-     */
     public List<PhoneDTO> getAllPhones() {
         EntityManager em = emf.createEntityManager();
         try {
@@ -70,9 +46,6 @@ public class PhoneFacade {
         }
     }
 
-    /**
-     * Returnerer en PhoneDTO med det givne PhoneNumber.
-     */
     public PhoneDTO getPhoneByNumber(String phoneNumber)
     {
         EntityManager em = emf.createEntityManager();
@@ -88,9 +61,6 @@ public class PhoneFacade {
         }
     }
 
-    /**
-     * Returnerer en PhoneDTO med den givne description.
-     */
     public PhoneDTO getPhoneByDescription(String description)
     {
         EntityManager em = emf.createEntityManager();
@@ -106,9 +76,6 @@ public class PhoneFacade {
         }
     }
 
-    /**
-     * Tilføjer en ny telefon til databasen og returnerer en PhoneDTO med den nye telefon.
-     */
     public PhoneDTO addPhone(PhoneDTO phoneDTO)
     {
         EntityManager em = emf.createEntityManager();
@@ -123,9 +90,6 @@ public class PhoneFacade {
         }
     }
 
-    /**
-     * Redigerer en eksisterende telefon i databasen og returnerer en PhoneDTO med den redigerede telefon.
-     */
     public PhoneDTO editPhone(PhoneDTO phoneDTO) {
         EntityManager em = emf.createEntityManager();
         try {
